@@ -1,0 +1,203 @@
+basePath: /api/v1
+definitions:
+  entity.Book:
+    properties:
+      author:
+        maxLength: 255
+        type: string
+      book_attrs:
+        $ref: '#/definitions/entity.BookAttrs'
+      book_status:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        maxLength: 255
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    required:
+    - author
+    - book_attrs
+    - book_status
+    - id
+    - title
+    - user_id
+    type: object
+  entity.BookAttrs:
+    properties:
+      description:
+        type: string
+      picture:
+        type: string
+      rating:
+        maximum: 10
+        minimum: 1
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample net-http-gorilla-ddd-example server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /v1/book:
+    delete:
+      consumes:
+      - application/json
+      description: Delete book by given ID.
+      parameters:
+      - description: Book ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: delete book by given ID
+      tags:
+      - Book
+    post:
+      consumes:
+      - application/json
+      description: Create a new book.
+      parameters:
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: Author
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: Book attributes
+        in: body
+        name: book_attrs
+        required: true
+        schema:
+          $ref: '#/definitions/entity.BookAttrs'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Book'
+      security:
+      - ApiKeyAuth: []
+      summary: create a new book
+      tags:
+      - Book
+    put:
+      consumes:
+      - application/json
+      description: Update book.
+      parameters:
+      - description: Book ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: Author
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: Book status
+        in: body
+        name: book_status
+        required: true
+        schema:
+          type: integer
+      - description: Book attributes
+        in: body
+        name: book_attrs
+        required: true
+        schema:
+          $ref: '#/definitions/entity.BookAttrs'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: update book
+      tags:
+      - Book
+  /v1/book/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get book by given ID.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Book'
+      summary: get book by given ID
+      tags:
+      - Book
+  /v1/books:
+    get:
+      consumes:
+      - application/json
+      description: Get all exists books.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Book'
+            type: array
+      summary: get all exists books
+      tags:
+      - Books
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
